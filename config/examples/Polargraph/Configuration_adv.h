@@ -1,6 +1,6 @@
 /**
  * Marlin 3D Printer Firmware
- * Copyright (c) 2020 MarlinFirmware [https://github.com/MarlinFirmware/Marlin]
+ * Copyright (c) 2021 MarlinFirmware [https://github.com/MarlinFirmware/Marlin]
  *
  * Based on Sprinter and grbl.
  * Copyright (c) 2011 Camiel Gubbels / Erik van der Zalm
@@ -20,6 +20,8 @@
  *
  */
 #pragma once
+
+#define CONFIG_EXAMPLES_DIR "Polargraph"
 
 /**
  * Configuration_adv.h
@@ -414,7 +416,7 @@
  */
 #define AUTOTEMP
 #if ENABLED(AUTOTEMP)
-  #define AUTOTEMP_OLDWEIGHT    0.98
+  #define AUTOTEMP_OLDWEIGHT    0.98  // Factor used to weight previous readings (0.0 < value < 1.0)
   // Turn on AUTOTEMP on M104/M109 by default using proportions set here
   //#define AUTOTEMP_PROPORTIONAL
   #if ENABLED(AUTOTEMP_PROPORTIONAL)
@@ -959,7 +961,7 @@
 
 // @section motion
 
-#define AXIS_RELATIVE_MODES { false, false, false, false }
+#define AXIS_RELATIVE_MODES { false, false, false }
 
 // Add a Duplicate option for well-separated conjoined nozzles
 //#define MULTI_NOZZLE_DUPLICATION
@@ -1136,7 +1138,7 @@
 //#define MICROSTEP32 HIGH,LOW,HIGH
 
 // Microstep settings (Requires a board with pins named X_MS1, X_MS2, etc.)
-#define MICROSTEP_MODES { 16, 16, 16, 16, 16, 16 } // [1,2,4,8,16]
+#define MICROSTEP_MODES { 16, 16, 16 } // [1,2,4,8,16]
 
 /**
  *  @section  stepper motor current
@@ -1197,7 +1199,7 @@
 // @section lcd
 
 #if ANY(HAS_LCD_MENU, EXTENSIBLE_UI, HAS_DWIN_E3V2)
-  #define MANUAL_FEEDRATE { 50*60, 50*60, 4*60, 2*60 } // (mm/min) Feedrates for manual moves along X, Y, Z, E from panel
+  #define MANUAL_FEEDRATE { 50*60, 50*60, 4*60 } // (mm/min) Feedrates for manual moves along X, Y, Z, E from panel
   #define FINE_MANUAL_MOVE 0.025    // (mm) Smallest manual move (< 0.1mm) applying to Z on most machines
   #if IS_ULTIPANEL
     #define MANUAL_E_MOVES_RELATIVE // Display extruder move distance rather than "position"
@@ -3700,6 +3702,8 @@
 
 //#define REPETIER_GCODE_M360     // Add commands originally from Repetier FW
 
+//#define RRF_GCODE_DIALECT       // Add M20 JSON file listings, M408, and more...
+
 /**
  * CNC G-code options
  * Support CNC-style G-code dialects used by laser cutters, drawing machine cams, etc.
@@ -3710,9 +3714,9 @@
 //#define GCODE_MOTION_MODES  // Remember the motion mode (G0 G1 G2 G3 G5 G38.X) and apply for X Y Z E F, etc.
 
 // Enable and set a (default) feedrate for all G0 moves
-//#define G0_FEEDRATE 3000 // (mm/min)
+#define G0_FEEDRATE   3000 // (mm/min)
 #ifdef G0_FEEDRATE
-  //#define VARIABLE_G0_FEEDRATE // The G0 feedrate is set by F in G0 motion mode
+  #define VARIABLE_G0_FEEDRATE   // The G0 feedrate is set by F in G0 motion mode
 #endif
 
 /**
@@ -4144,6 +4148,8 @@
     #define MMU2_CAN_LOAD_INCREMENT_SEQUENCE \
       { -MMU2_CAN_LOAD_INCREMENT, MMU2_CAN_LOAD_FEEDRATE }
 
+    // Continue unloading if sensor detects filament after the initial unload move
+    //#define MMU_IR_UNLOAD_MOVE
   #else
 
     /**

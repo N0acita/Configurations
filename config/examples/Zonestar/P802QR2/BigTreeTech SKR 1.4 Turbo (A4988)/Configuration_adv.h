@@ -21,6 +21,8 @@
  */
 #pragma once
 
+#define CONFIG_EXAMPLES_DIR "Zonestar/P802QR2/BigTreeTech SKR 1.4 Turbo (A4988)"
+
 /**
  * Configuration_adv.h
  *
@@ -301,7 +303,7 @@
  * Thermal Protection parameters for the bed are just as above for hotends.
  */
 #if ENABLED(THERMAL_PROTECTION_BED)
-  #define THERMAL_PROTECTION_BED_PERIOD        20 // Seconds
+  #define THERMAL_PROTECTION_BED_PERIOD        90 // Seconds
   #define THERMAL_PROTECTION_BED_HYSTERESIS     2 // Degrees Celsius
 
   /**
@@ -414,7 +416,7 @@
  */
 #define AUTOTEMP
 #if ENABLED(AUTOTEMP)
-  #define AUTOTEMP_OLDWEIGHT    0.98
+  #define AUTOTEMP_OLDWEIGHT    0.98  // Factor used to weight previous readings (0.0 < value < 1.0)
   // Turn on AUTOTEMP on M104/M109 by default using proportions set here
   //#define AUTOTEMP_PROPORTIONAL
   #if ENABLED(AUTOTEMP_PROPORTIONAL)
@@ -2221,7 +2223,7 @@
  * Currently handles M108, M112, M410, M876
  * NOTE: Not yet implemented for all platforms.
  */
-//#define EMERGENCY_PARSER
+#define EMERGENCY_PARSER
 
 /**
  * Realtime Reporting (requires EMERGENCY_PARSER)
@@ -3700,6 +3702,8 @@
 
 //#define REPETIER_GCODE_M360     // Add commands originally from Repetier FW
 
+//#define RRF_GCODE_DIALECT       // Add M20 JSON file listings, M408, and more...
+
 /**
  * CNC G-code options
  * Support CNC-style G-code dialects used by laser cutters, drawing machine cams, etc.
@@ -4144,6 +4148,8 @@
     #define MMU2_CAN_LOAD_INCREMENT_SEQUENCE \
       { -MMU2_CAN_LOAD_INCREMENT, MMU2_CAN_LOAD_FEEDRATE }
 
+    // Continue unloading if sensor detects filament after the initial unload move
+    //#define MMU_IR_UNLOAD_MOVE
   #else
 
     /**

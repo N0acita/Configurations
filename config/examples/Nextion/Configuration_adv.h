@@ -21,6 +21,8 @@
  */
 #pragma once
 
+#define CONFIG_EXAMPLES_DIR "Nextion"
+
 /**
  * Configuration_adv.h
  *
@@ -414,7 +416,7 @@
  */
 #define AUTOTEMP
 #if ENABLED(AUTOTEMP)
-  #define AUTOTEMP_OLDWEIGHT    0.98
+  #define AUTOTEMP_OLDWEIGHT    0.98  // Factor used to weight previous readings (0.0 < value < 1.0)
   // Turn on AUTOTEMP on M104/M109 by default using proportions set here
   //#define AUTOTEMP_PROPORTIONAL
   #if ENABLED(AUTOTEMP_PROPORTIONAL)
@@ -1298,7 +1300,7 @@
   //#define LCD_DECIMAL_SMALL_XY
 
   // Add an 'M73' G-code to set the current percentage
-  //#define LCD_SET_PROGRESS_MANUALLY
+  #define LCD_SET_PROGRESS_MANUALLY
 
   // Show the E position (filament used) during printing
   //#define LCD_SHOW_E_TOTAL
@@ -1307,9 +1309,9 @@
 // LCD Print Progress options
 #if EITHER(SDSUPPORT, LCD_SET_PROGRESS_MANUALLY)
   #if CAN_SHOW_REMAINING_TIME
-    //#define SHOW_REMAINING_TIME         // Display estimated time to completion
+    #define SHOW_REMAINING_TIME           // Display estimated time to completion
     #if ENABLED(SHOW_REMAINING_TIME)
-      //#define USE_M73_REMAINING_TIME    // Use remaining time from M73 command instead of estimation
+      #define USE_M73_REMAINING_TIME      // Use remaining time from M73 command instead of estimation
       //#define ROTATE_PROGRESS_DISPLAY   // Display (P)rogress, (E)lapsed, and (R)emaining time
     #endif
   #endif
@@ -1544,7 +1546,7 @@
    *
    * :[ 'LCD', 'ONBOARD', 'CUSTOM_CABLE' ]
    */
-  //#define SDCARD_CONNECTION LCD
+  #define SDCARD_CONNECTION ONBOARD
 
   // Enable if SD detect is rendered useless (e.g., by using an SD extender)
   //#define NO_SD_DETECT
@@ -1907,7 +1909,7 @@
  *
  * See https://marlinfw.org/docs/features/lin_advance.html for full instructions.
  */
-//#define LIN_ADVANCE
+#define LIN_ADVANCE
 #if ENABLED(LIN_ADVANCE)
   //#define EXTRA_LIN_ADVANCE_K // Enable for second linear advance constants
   #define LIN_ADVANCE_K 0.22    // Unit: mm compression per 1mm/s extruder speed
@@ -2221,7 +2223,7 @@
  * Currently handles M108, M112, M410, M876
  * NOTE: Not yet implemented for all platforms.
  */
-//#define EMERGENCY_PARSER
+#define EMERGENCY_PARSER
 
 /**
  * Realtime Reporting (requires EMERGENCY_PARSER)
@@ -2399,7 +2401,7 @@
  *
  * Enable PARK_HEAD_ON_PAUSE to add the G-code M125 Pause and Park.
  */
-//#define ADVANCED_PAUSE_FEATURE
+#define ADVANCED_PAUSE_FEATURE
 #if ENABLED(ADVANCED_PAUSE_FEATURE)
   #define PAUSE_PARK_RETRACT_FEEDRATE         60  // (mm/s) Initial retract feedrate.
   #define PAUSE_PARK_RETRACT_LENGTH            2  // (mm) Initial retract.
@@ -2442,7 +2444,7 @@
   //#define PARK_HEAD_ON_PAUSE                    // Park the nozzle during pause and filament change.
   //#define HOME_BEFORE_FILAMENT_CHANGE           // If needed, home before parking for filament change
 
-  //#define FILAMENT_LOAD_UNLOAD_GCODES           // Add M701/M702 Load/Unload G-codes, plus Load/Unload in the LCD Prepare menu.
+  #define FILAMENT_LOAD_UNLOAD_GCODES             // Add M701/M702 Load/Unload G-codes, plus Load/Unload in the LCD Prepare menu.
   //#define FILAMENT_UNLOAD_ALL_EXTRUDERS         // Allow M702 to unload all extruders above a minimum target temp (as set by M302)
 #endif
 
@@ -3700,6 +3702,8 @@
 
 //#define REPETIER_GCODE_M360     // Add commands originally from Repetier FW
 
+//#define RRF_GCODE_DIALECT       // Add M20 JSON file listings, M408, and more...
+
 /**
  * CNC G-code options
  * Support CNC-style G-code dialects used by laser cutters, drawing machine cams, etc.
@@ -4144,6 +4148,8 @@
     #define MMU2_CAN_LOAD_INCREMENT_SEQUENCE \
       { -MMU2_CAN_LOAD_INCREMENT, MMU2_CAN_LOAD_FEEDRATE }
 
+    // Continue unloading if sensor detects filament after the initial unload move
+    //#define MMU_IR_UNLOAD_MOVE
   #else
 
     /**

@@ -21,6 +21,8 @@
  */
 #pragma once
 
+#define CONFIG_EXAMPLES_DIR "Creality/Ender-3/MKS Robin E3P"
+
 /**
  * Configuration_adv.h
  *
@@ -414,7 +416,7 @@
  */
 #define AUTOTEMP
 #if ENABLED(AUTOTEMP)
-  #define AUTOTEMP_OLDWEIGHT    0.98
+  #define AUTOTEMP_OLDWEIGHT    0.98  // Factor used to weight previous readings (0.0 < value < 1.0)
   // Turn on AUTOTEMP on M104/M109 by default using proportions set here
   //#define AUTOTEMP_PROPORTIONAL
   #if ENABLED(AUTOTEMP_PROPORTIONAL)
@@ -1238,7 +1240,7 @@
   #endif
 
   // Include a page of printer information in the LCD Main Menu
-  //#define LCD_INFO_MENU
+  #define LCD_INFO_MENU
   #if ENABLED(LCD_INFO_MENU)
     //#define LCD_PRINTER_INFO_IS_BOOTSCREEN // Show bootscreen(s) instead of Printer Info pages
   #endif
@@ -1644,7 +1646,7 @@
 
 #if HAS_MARLINUI_U8GLIB || IS_DWIN_MARLINUI
   // Show SD percentage next to the progress bar
-  //#define SHOW_SD_PERCENT
+  #define SHOW_SD_PERCENT
 
   // Enable to save many cycles by drawing a hollow frame on Menu Screens
   #define MENU_HOLLOW_FRAME
@@ -1860,7 +1862,7 @@
  *
  * Warning: Does not respect endstops!
  */
-//#define BABYSTEPPING
+#define BABYSTEPPING
 #if ENABLED(BABYSTEPPING)
   //#define INTEGRATED_BABYSTEPPING         // EXPERIMENTAL integration of babystepping into the Stepper ISR
   //#define BABYSTEP_WITHOUT_HOMING
@@ -3700,6 +3702,8 @@
 
 //#define REPETIER_GCODE_M360     // Add commands originally from Repetier FW
 
+//#define RRF_GCODE_DIALECT       // Add M20 JSON file listings, M408, and more...
+
 /**
  * CNC G-code options
  * Support CNC-style G-code dialects used by laser cutters, drawing machine cams, etc.
@@ -4144,6 +4148,8 @@
     #define MMU2_CAN_LOAD_INCREMENT_SEQUENCE \
       { -MMU2_CAN_LOAD_INCREMENT, MMU2_CAN_LOAD_FEEDRATE }
 
+    // Continue unloading if sensor detects filament after the initial unload move
+    //#define MMU_IR_UNLOAD_MOVE
   #else
 
     /**

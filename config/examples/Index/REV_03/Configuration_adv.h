@@ -1,6 +1,6 @@
 /**
  * Marlin 3D Printer Firmware
- * Copyright (c) 2020 MarlinFirmware [https://github.com/MarlinFirmware/Marlin]
+ * Copyright (c) 2021 MarlinFirmware [https://github.com/MarlinFirmware/Marlin]
  *
  * Based on Sprinter and grbl.
  * Copyright (c) 2011 Camiel Gubbels / Erik van der Zalm
@@ -20,6 +20,8 @@
  *
  */
 #pragma once
+
+#define CONFIG_EXAMPLES_DIR "Index/REV_03"
 
 /**
  * Configuration_adv.h
@@ -414,7 +416,7 @@
  */
 #define AUTOTEMP
 #if ENABLED(AUTOTEMP)
-  #define AUTOTEMP_OLDWEIGHT    0.98
+  #define AUTOTEMP_OLDWEIGHT    0.98  // Factor used to weight previous readings (0.0 < value < 1.0)
   // Turn on AUTOTEMP on M104/M109 by default using proportions set here
   //#define AUTOTEMP_PROPORTIONAL
   #if ENABLED(AUTOTEMP_PROPORTIONAL)
@@ -786,14 +788,14 @@
 
 //#define SENSORLESS_BACKOFF_MM  { 2, 2, 0 }  // (mm) Backoff from endstops before sensorless homing
 
-#define HOMING_BUMP_MM      { 5, 5, 2 }       // (mm) Backoff from endstops after first bump
-#define HOMING_BUMP_DIVISOR { 2, 2, 4 }       // Re-Bump Speed Divisor (Divides the Homing Feedrate)
+#define HOMING_BUMP_MM      { 5, 5, 2, 2, 2, 5 }       // (mm) Backoff from endstops after first bump
+#define HOMING_BUMP_DIVISOR { 2, 2, 4, 4, 4, 2 }       // Re-Bump Speed Divisor (Divides the Homing Feedrate)
 
 //#define HOMING_BACKOFF_POST_MM { 2, 2, 2 }  // (mm) Backoff from endstops after homing
 
-//#define QUICK_HOME                          // If G28 contains XY do a diagonal move first
+#define QUICK_HOME                          // If G28 contains XY do a diagonal move first
 //#define HOME_Y_BEFORE_X                     // If G28 contains XY home Y before X
-//#define HOME_Z_FIRST                        // Home Z first. Requires a Z-MIN endstop (not a probe).
+#define HOME_Z_FIRST                        // Home Z first. Requires a Z-MIN endstop (not a probe).
 //#define CODEPENDENT_XY_HOMING               // If X/Y can't home without homing Y/X first
 
 // @section bltouch
@@ -959,7 +961,7 @@
 
 // @section motion
 
-#define AXIS_RELATIVE_MODES { false, false, false, false }
+#define AXIS_RELATIVE_MODES { false, false, false, false, false, false }
 
 // Add a Duplicate option for well-separated conjoined nozzles
 //#define MULTI_NOZZLE_DUPLICATION
@@ -3689,7 +3691,7 @@
 #define FASTER_GCODE_PARSER
 
 #if ENABLED(FASTER_GCODE_PARSER)
-  //#define GCODE_QUOTED_STRINGS  // Support for quoted string parameters
+  #define GCODE_QUOTED_STRINGS  // Support for quoted string parameters
 #endif
 
 // Support for MeatPack G-code compression (https://github.com/scottmudge/OctoPrint-MeatPack)
@@ -3699,6 +3701,8 @@
 //#define GCODE_CASE_INSENSITIVE  // Accept G-code sent to the firmware in lowercase
 
 //#define REPETIER_GCODE_M360     // Add commands originally from Repetier FW
+
+//#define RRF_GCODE_DIALECT       // Add M20 JSON file listings, M408, and more...
 
 /**
  * CNC G-code options
@@ -4144,6 +4148,8 @@
     #define MMU2_CAN_LOAD_INCREMENT_SEQUENCE \
       { -MMU2_CAN_LOAD_INCREMENT, MMU2_CAN_LOAD_FEEDRATE }
 
+    // Continue unloading if sensor detects filament after the initial unload move
+    //#define MMU_IR_UNLOAD_MOVE
   #else
 
     /**
